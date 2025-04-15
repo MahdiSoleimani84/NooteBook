@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Notebook</string>
+    <string name="toolBar_text">سطل زباله</string>
+    <string name="title">عنوان</string>
+    <string name="description">توضیحات...</string>
+    <string name="save">ذخیره کردن</string>
+    <string name="cancel">لغو کردن</string>
+</resources>
