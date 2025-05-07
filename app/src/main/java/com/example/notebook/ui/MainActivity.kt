@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        binding.txtTrash.setOnClickListener {
+            startActivity(Intent(this,BinActivity::class.java))
+        }
+
     }
 
     override fun onStart() {
@@ -47,8 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun initRecycler() {
 
         dao = NotesDao(DBHelper(this))
-        val finalData = dao.getNotesFromRecycler(DBHelper.FALSE_STATE)
-        adapter = NotesAdapter(this, finalData, dao)
+        adapter = NotesAdapter(this, dao)
 
         binding.RecyclerNotes.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

@@ -1,9 +1,7 @@
 package com.example.notebook.adapter.recycler
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,31 +11,32 @@ import com.example.notebook.R
 import com.example.notebook.data.local.db.DBHelper
 import com.example.notebook.data.local.db.dao.NotesDao
 import com.example.notebook.data.model.RecyclerNotesModel
-import com.example.notebook.databinding.ListItemNotesBinding
-import com.example.notebook.ui.AddNotesActivity
+import com.example.notebook.databinding.ListItemBinNotesBinding
 
-class NotesAdapter
+
+class RecycleHolder
     (
     private val context: Context,
-
     private val dao: NotesDao
-) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+
+) : RecyclerView.Adapter<RecycleHolder.RecycleViewHolder>() {
 
 
-    private var allData: ArrayList<RecyclerNotesModel>
 
-    init {
-        allData = dao.getNotesFromRecycler(DBHelper.FALSE_STATE)
-    }
+    private var allData = dao.getNotesFromRecycler(DBHelper.TRUE_STATE)
+
+
+
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        NotesViewHolder(
-            ListItemNotesBinding.inflate(LayoutInflater.from(context), parent, false)
+        RecycleViewHolder(
+            ListItemBinNotesBinding.inflate(LayoutInflater.from(context), parent, false)
 
         )
 
-    override fun onBindViewHolder(holder: NotesViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: RecycleViewHolder, position: Int) =
         holder.setData(allData[position])
 
 
@@ -47,8 +46,8 @@ class NotesAdapter
 
 
 
-    inner class NotesViewHolder
-        (private val view: ListItemNotesBinding)
+    inner class RecycleViewHolder
+        (private val view: ListItemBinNotesBinding)
         : RecyclerView.ViewHolder(view.root){
 
         fun setData(data: RecyclerNotesModel) {
@@ -58,12 +57,12 @@ class NotesAdapter
             view.imgDeleteNotes.setOnClickListener {
                 AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
                     .setTitle("حدف یادداشت")
-                    .setMessage("ایا میخواهید یادداشت به سطل زباله منتقل شود؟")
+                    .setMessage("ایا میخواهید یادداشت حذف شود؟")
                     .setIcon(R.drawable.ic_delete)
                     .setNeutralButton("بله") { dialog, _ ->
-                        val result = dao.editNotes( data.id, DBHelper.TRUE_STATE)
+                        val result = dao.deleteNotes(data.id)
                         if (result){
-                            toast("یادداشت به سطل زباله منتقل شد")
+                            toast("یادداشت حدف شد")
                             allData.removeAt(adapterPosition)
                             notifyItemRemoved(adapterPosition)
                         }else{
@@ -76,22 +75,31 @@ class NotesAdapter
 
             }
 
-            view.root.setOnClickListener {
-                val intent = Intent(context,AddNotesActivity::class.java)
-                intent.putExtra("id",data.id)
-                context.startActivity(intent)
+            view.imgDeleteBinNotes.setOnClickListener {
+                AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
+                    .setTitle("بازگردانی یادداشت")
+                    .setMessage("ایا میخواهید یادداشت بازگردانی شود؟")
+                    .setIcon(R.drawable.ic_delete)
+                    .setNeutralButton("بله") { dialog, _ ->
+                        val result = dao.editNotes( data.id, DBHelper.FALSE_STATE)
+                        if (result){
+                            toast("یادداشت بازگردانی شد")
+                            allData.removeAt(adapterPosition)
+                            notifyItemRemoved(adapterPosition)
+                        }else{
+                            toast("عملیات با مشکل مواجه شد")
+                        }
+                    }
+                    .setPositiveButton("خیر") { _, _ -> }
+                    .create()
+                    .show()
+
             }
+
         }
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun changData(data: ArrayList<RecyclerNotesModel>) {
-
-            allData = data
-            notifyDataSetChanged()
-
-    }
 
     private fun toast(name: String) {
         Toast.makeText(context, name, Toast.LENGTH_SHORT).show()

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_blue"
+    android:background="#1E1E2E"
     tools:context=".ui.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -30,8 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/toolBar_text"
-            android:textColor="@color/cyan"
-            android:textSize="20sp" />
+            android:textColor="#B0BEC5FF"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
 
     </androidx.appcompat.widget.Toolbar>
 

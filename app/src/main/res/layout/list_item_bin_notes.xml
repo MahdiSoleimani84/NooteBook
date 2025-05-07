@@ -32,4 +32,15 @@
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_delete"/>
 
+
+    <ImageView
+        android:id="@+id/img_delete_bin_notes"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/ic_return_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/img_delete_notes"
+        app:layout_constraintStart_toEndOf="@+id/img_delete_notes"
+        app:layout_constraintTop_toTopOf="@+id/img_delete_notes" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
