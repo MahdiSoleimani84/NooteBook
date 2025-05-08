@@ -24,6 +24,10 @@ class BinActivity : AppCompatActivity() {
 
         initRecycler()
 
+        binding.backFromBin.setOnClickListener {
+            finish()
+        }
+
     }
 
 
